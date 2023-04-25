@@ -1,11 +1,15 @@
 # This Python file uses the following encoding: utf-8
 
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget
+import nonebot_desktop_wing as wing
+from subprocess import PIPE, STDOUT, Popen
+
 # import time
 # Important:
 # You need to run the following command to generate the ui_form.py file
 #     pyside6-uic form.ui -o ui_form.py, or
 #     pyside2-uic form.ui -o ui_form.py
+
 from ui import UI
 from create_project import Ui_NewProject as CP
 from terminal_page import Ui_terminal_page as TP
@@ -20,6 +24,9 @@ class MainWindow(QMainWindow):
         
         self.hp = HP()
         self.hp.setupUi(self.hp)
+        # so strange - why does `setupUi` receive two same objects?
+        # It's a method and `self=self.hp` and `help_page=self.hp`.
+        # (commented by worldmozara(NCBM))
         self.cp = CP()
         self.cp.setupUi(self.cp)
         self.tp = TP()
@@ -55,7 +62,44 @@ class MainWindow(QMainWindow):
         self.ui.senior_terminal.triggered.connect(lambda: self.set_pages_index(1))
         self.ui.new_project.triggered.connect(lambda: self.set_pages_index(2))
 
-    def set_pages_index(self, page_num: int) :
+    def set_pages_index(self, page_num: int):
         self.ui.pages.setCurrentIndex(page_num)
 
+    def create_project(self):  # add args if needed
+        # require working directory
 
+        # validate args
+        sel_drvs = [...]  # selected drivers
+        sel_adps = [...]  # selected adapters
+        if not sel_drvs:
+            # show_error("NoneBot2 项目需要*至少一个*驱动器才能正常工作！")
+            return
+        if not sel_adps:
+            # show_error("NoneBot2 项目需要*至少一个*适配器才能正常工作！")
+            return
+
+        # lock widgets
+        ...
+
+        try:
+            # proc = wing.create(..., new_win=False, catch_output=True)
+            # Then read data from `proc.stdout`.
+            ...
+        except Exception as e:
+            # show_error(e)
+            return
+        
+        # unlock widgets
+        ...
+
+        # show complete
+
+    def run_project(self):
+        # require working directory
+        ...
+
+        # use sys.executable as `python_path` if nb-cli is installed with this,
+        # otherwise use `wing.find_python(workdir)`.
+
+        # proc = Popen((python_path, "-m", "nb_cli", "run"), stdout=PIPE, stderr=STDOUT)
+        # Then read data from `proc.stdout`.
