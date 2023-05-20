@@ -17,7 +17,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QCheckBox, QLabel, QListWidget,
     QListWidgetItem, QPlainTextEdit, QPushButton, QSizePolicy,
-    QWidget)
+    QWidget,QHBoxLayout)
 
 class Ui_NewProject(QWidget):
     def setupUi(self, NewProject):
@@ -26,15 +26,15 @@ class Ui_NewProject(QWidget):
         #NewProject.resize(600, 600)
         #NewProject.setMinimumSize(QSize(600, 600))
         #NewProject.setMaximumSize(QSize(600, 600))
-        self.adapter_list = QListWidget(NewProject)
-        self.adapter_list.setObjectName(u"adapter_list")
-        self.adapter_list.setGeometry(QRect(10, 30, 281, 481))
+        self.driver_list = QListWidget(NewProject)
+        self.driver_list.setObjectName(u"driver_list")
+        self.driver_list.setGeometry(QRect(10, 30, 281, 481))
         self.drivertext = QLabel(NewProject)
         self.drivertext.setObjectName(u"drivertext")
         self.drivertext.setGeometry(QRect(90, 10, 71, 16))
-        self.listWidget_2 = QListWidget(NewProject)
-        self.listWidget_2.setObjectName(u"listWidget_2")
-        self.listWidget_2.setGeometry(QRect(300, 30, 281, 481))
+        self.adapter_list = QListWidget(NewProject)
+        self.adapter_list.setObjectName(u"adapter_list")
+        self.adapter_list.setGeometry(QRect(300, 30, 281, 481))
         self.adaptertext = QLabel(NewProject)
         self.adaptertext.setObjectName(u"adaptertext")
         self.adaptertext.setGeometry(QRect(420, 10, 71, 16))
@@ -59,12 +59,12 @@ class Ui_NewProject(QWidget):
         self.project_ok = QPushButton(NewProject)
         self.project_ok.setObjectName(u"project_ok")
         self.project_ok.setGeometry(QRect(460, 520, 121, 71))
-        QWidget.setTabOrder(self.adapter_list, self.projects_entry)
+        QWidget.setTabOrder(self.driver_list, self.projects_entry)
         QWidget.setTabOrder(self.projects_entry, self.sources_entry)
         QWidget.setTabOrder(self.sources_entry, self.project_ok)
         QWidget.setTabOrder(self.project_ok, self.dev)
         QWidget.setTabOrder(self.dev, self.venv)
-        QWidget.setTabOrder(self.venv, self.listWidget_2)
+        QWidget.setTabOrder(self.venv, self.adapter_list)
 
         self.retranslateUi(NewProject)
 
@@ -81,6 +81,53 @@ class Ui_NewProject(QWidget):
         self.sources.setText(QCoreApplication.translate("NewProject", u"\u4e0b\u8f7d\u6e90", None))
         self.project_ok.setText(QCoreApplication.translate("NewProject", u"\u521b\u5efa\u9879\u76ee", None))
     # retranslateUi
+    def addDriverItem(self,name):
+        '''
+        checkbox = QCheckBox()
+        item = self.adapter_list_2.item(0)
+        self.adapter_list_2.addItem(item)
+        item.setSizeHint(self.adapter_list_2.sizeHint())
+        self.adapter_list_2.setItemWidget(item.checkbox)
+        '''
+        count = self.driver_list.count()
 
+        itemWidget = listitem()
+        itemWidget.addListItemData(count,name)
+        itemWidget.show()
+
+        driver_listItem = QListWidgetItem()
+        driver_listItem.setSizeHint(QSize(50,36))
+        self.driver_list.addItem(driver_listItem)
+        self.driver_list.setItemWidget(driver_listItem,itemWidget)
+    
+    def addAdapterItem(self,name):
+       
+        count = self.adapter_list.count()
+
+        itemWidget = listitem()
+        itemWidget.addListItemData(count,name)
+        itemWidget.show()
+
+        adapter_listItem = QListWidgetItem()
+        adapter_listItem.setSizeHint(QSize(50,36))
+        self.adapter_list.addItem(adapter_listItem)
+        self.adapter_list.setItemWidget(adapter_listItem,itemWidget)
+
+class listitem(QWidget):
+    _RowNum_ = 0 #row num for Qadapter_list
+    _name_ = "" #show name for Qadapter_list
+
+    def addListItemData(self,num,name):
+        self._RowNum_ = num
+        self._name_ = name
+        self.style = QHBoxLayout()
+        self.setLayout(self.style)
+        self.checkbox = QCheckBox()
+        self.checkbox.show()
+        self.label = QLabel()
+        self.label.setText(name)
+        self.label.show()
+        self.style.addWidget(self.checkbox)
+        self.style.addWidget(self.label)
     
 

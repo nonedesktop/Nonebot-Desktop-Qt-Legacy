@@ -69,6 +69,7 @@ class Ui_NewProject(object):
         self.retranslateUi(NewProject)
 
         QMetaObject.connectSlotsByName(NewProject)
+        
     # setupUi
 
     def retranslateUi(self, NewProject):
@@ -81,4 +82,36 @@ class Ui_NewProject(object):
         self.sources.setText(QCoreApplication.translate("NewProject", u"\u4e0b\u8f7d\u6e90", None))
         self.project_ok.setText(QCoreApplication.translate("NewProject", u"\u521b\u5efa\u9879\u76ee", None))
     # retranslateUi
+
+    def addDriverItem(self,str:show_name):
+        '''
+        checkbox = QCheckBox()
+        item = self.listWidget_2.item(0)
+        self.listWidget_2.addItem(item)
+        item.setSizeHint(self.listWidget_2.sizeHint())
+        self.listWidget_2.setItemWidget(item.checkbox)
+        '''
+        count = self.listWidget_2.count()
+
+        itemWidget = listitem()
+        itemWidget.addListItemData(count,show_name)
+        itemWidget.show()
+
+        listWidgetItem = QListWidgetItem()
+        listWidgetItem.setSizeHint(48,48)
+        self.listWidget_2.addItem(listWidgetItem)
+        self.listWidget_2.setItemWidget(listWidgetItem,itemWidget)
+
+
+class listitem(QWidget):
+    _RowNum_ = 0 #row num for QListWidget
+    _name_ = "" #show name for QListWidget
+
+    def addListItemData(self,int:row_num,str:show_name):
+        self._RowNum_ = row_num
+        self._name_ = show_name
+
+
+
+
 

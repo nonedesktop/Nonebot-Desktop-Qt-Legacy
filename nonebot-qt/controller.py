@@ -18,6 +18,7 @@ from help_pages import Ui_help_page as HP
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
+        
         super().__init__(parent)
         self.ui = UI()
         self.ui.setupUi(self)
@@ -61,10 +62,26 @@ class MainWindow(QMainWindow):
         self.ui.help_us.triggered.connect(lambda: self.set_pages_index(0))
         self.ui.senior_terminal.triggered.connect(lambda: self.set_pages_index(1))
         self.ui.new_project.triggered.connect(lambda: self.set_pages_index(2))
+        #self.getDriverList()
 
     def set_pages_index(self, page_num: int):
         self.ui.pages.setCurrentIndex(page_num)
+        if page_num == 2:
+            self.setDriverList()
+            self.setAdapterList()
 
+    #设置列表
+    def setDriverList(self):
+        driver_list = wing.meta.drivers
+        for i in driver_list:
+            self.cp.addDriverItem(i.name)
+    def setAdapterList(self):
+        adapter_list = wing.meta.adapters
+        for i in adapter_list:
+            self.cp.addAdapterItem(i.name)
+        
+
+'''
     def create_project(self):  # add args if needed
         # require working directory
 
@@ -103,3 +120,5 @@ class MainWindow(QMainWindow):
 
         # proc = Popen((python_path, "-m", "nb_cli", "run"), stdout=PIPE, stderr=STDOUT)
         # Then read data from `proc.stdout`.
+
+'''
